@@ -13,8 +13,8 @@ void parser_command(const char *input){
   }else if (strncmp(input,"INSERT INTO", 11) == 0){
       printf("working");
   }
-
 }
+
 void create_table(const char *input){
   char table_name[100];
   char column[300];
@@ -26,7 +26,6 @@ void create_table(const char *input){
       printf("column: (column_name datatype, ....)\n");
   }
 }
-
 
 void select_func(const char *input){
   char column[100];
