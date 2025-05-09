@@ -7,23 +7,23 @@
 
 void parser_command(const char *input){
   if (strncmp(input,"CREATE TABLE", 12) == 0){
-      create_table(input);
+      create_parser(input);
   }else if (strncmp(input,"SELECT", 5) == 0){
-      select_func(input);
+      select_parser(input);
   }else if (strncmp(input,"INSERT INTO", 11) == 0){
-      insert_into(input);
+      insert_into_parser(input);
   }else if (strncmp(input,"DELETE FROM", 11) == 0){
-      delete_func(input);
+      delete_parser(input);
   }else if (strncmp(input,"UPDATE", 6) == 0){
-      update_func(input);
+      update_parser(input);
   }else if (strncmp(input,"DROP TABLE", 9) == 0){
-      drop_table(input);
+      drop_parser(input);
   }else{
       printf("UNKOWN COMMAND\n");
   }
 
 }
-void create_table(const char *input){
+void create_parser(const char *input){
   char table_name[100];
   char column[300];
   if (sscanf(input, "CREATE TABLE %s (%[^)])",table_name,column) ==2){
@@ -36,9 +36,9 @@ void create_table(const char *input){
 }
 
 
-void select_func(const char *input){
-  char column[100];
+void select_parser(const char *input){
   char table_name[100];
+  char column[100];
   char condition[300];
   if (sscanf(input, "SELECT %s FROM %s WHERE (%[^)])",column,table_name,condition) ==3){
       printf("\n%s  --  %s -- %s\n",column,table_name,condition);
@@ -49,7 +49,7 @@ void select_func(const char *input){
   }
 }
 
-void delete_func(const char *input){
+void delete_parser(const char *input){
   char table_name[100];
   char condition[300];
   if (sscanf(input, "DELETE FROM %s WHERE (%[^)])",table_name,condition) ==2){
@@ -61,7 +61,7 @@ void delete_func(const char *input){
 }
 
 
-void insert_into(const char *input){
+void insert_into_parser(const char *input){
   char table_name[100];
   char column[300];
   char values[300];
@@ -73,7 +73,7 @@ void insert_into(const char *input){
   }
 }
 
-void update_func(const char *input){
+void update_parser(const char *input){
   char table_name[100];
   char keyValue[600];
   char condition[300];
@@ -85,7 +85,7 @@ void update_func(const char *input){
   }
 }
 
-void drop_table(const char *input){
+void drop_parser(const char *input){
   char table_name[100];
   if (sscanf(input, "DROP TABLE %s",table_name) ==1){
       printf("\n%s\n",table_name);
