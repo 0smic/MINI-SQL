@@ -7,8 +7,8 @@
 void cl_loop();
 
 int main(){
-    cl_loop();
-    
+    cl_loop(); 
+    return 0;
 }
 
 void cl_loop(){
@@ -23,11 +23,8 @@ void cl_loop(){
             break;
         }
         parser_command(input);
-    }
-    
+    }   
 }
 
 
-  
-}
 
