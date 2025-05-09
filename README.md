@@ -15,9 +15,8 @@ MINI-SQL is a minimalistic SQL engine developed in C, designed to execute a subs
 
 To build and run MINI-SQL:
 
-1. Clone the repository:
    ```bash
    git clone https://github.com/0smic/MINI-SQL.git
-   cd MINI-SQL
+   cd MINI-SQL/src
    gcc main.c parser.c
    ./a.out
