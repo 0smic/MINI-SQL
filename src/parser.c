@@ -32,7 +32,9 @@ void create_parser(const char *input){
       printf("Syntax ERROR!!\n");
       printf("CREATE TABLE table_name column\n");
       printf("column: (column_name datatype, ....)\n");
+      return;
   }
+    
 }
 
 
@@ -93,5 +95,32 @@ void drop_parser(const char *input){
       printf("Syntax ERROR!!\n");
       printf("DROP TABLE table_name\n");  
   }
+}
+
+
+
+int sep_column_datatype(char ***column_name, char ***column_datatype, char *column){
+    /*This function tokenize the column name and the datatype and return it*/
+     *column_name = malloc(MAX_COLUMNS * sizeof(char*));
+     *column_datatype = malloc(MAX_COLUMNS * sizeof(char*));
+     int index = 0;
+     int count = 0;
+     for(char *p = column;*p;p++){
+         if(*p == ','){
+             count++;
+         }
+     }
+     char *saveptr1, *saveptr2;
+     char *pair = strtok_r(column,",",&saveptr1);
+     while(pair != NULL && index < count){
+         (*column_name)[index] = strtok_r(pair, " ",&saveptr2);
+         (*column_datatype)[index] = strtok_r(NULL, " ",&saveptr2);
+         if((*column_name)[index] != NULL && (*column_datatype)[index] != NULL){
+             printf("name : %s , datatype: %s\n",(*column_name)[index],(*column_datatype)[index]);
+         }
+         pair = strtok_r(NULL, ",",&saveptr1);
+         index++;
+     }
+    return count;
 }
 
