@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "parser.h"
+#include "engine.h"
 
-#define MAX_COLUMNS 10
-#define MAX_ROWS 100
+
+
 
 typedef enum {
     MYSQL_TYPE_DECIMAL,     // Deprecated
@@ -36,10 +38,15 @@ typedef enum {
     MYSQL_TYPE_GEOMETRY     // Spatial data
 } DataType;
 
+typedef struct {
+  char *name;
+  DataType type;
+
+} column_t;
 
 typedef struct table{
   char *name;
-  char *column[MAX_COLUMNS];
+  column_t *column[MAX_COLUMNS];
   int column_count;
 
   int row_capacity;
@@ -50,20 +57,25 @@ typedef struct {
   void** rows;
 } row_t;
 
-typedef struct {
-  char *name;
-  DataType type;
-  
-} column_t;
 
-table_t *create_table(const char *table_name, const char *columns){
-    printf("CREATE TABLE %s (%s)\n", table_name, columns);
+table_t *create_table(const char *table_name, const char *columns_input){
+    printf("CREATE TABLE %s (%s)\n", table_name, columns_input);
+   char *columns = strdup(columns_input);
+   char **column_name, **column_datatype;
     table_t *new_table = malloc(sizeof(table_t));
+    if (new_table == NULL) return NULL;
+
+   // Initialize the table structure
     new_table->name = strdup(table_name);
-    return new_table;
+    new_table->column_count = 0;
+    new_table->row_capacity = MAX_ROWS;
+    new_table->rows_count = 0;
 
-      
-    
+    new_table->column_count = sep_column_datatype(&column_name, &column_datatype, columns);
+    printf("column count: %d\n",new_table->column_count);
+    for (int i = 0; i < new_table->column_count; i++){
+      new_table->column[i]->name = strdup(column_name[i]);
+      new_table->column[i]->type = strdup(column_datatype[i]);
+    }
 
-  
 }
