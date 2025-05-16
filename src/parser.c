@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "parser.h"
+#include "engine.h"
+
 
 
 
@@ -28,6 +30,7 @@ void create_parser(const char *input){
   char column[300];
   if (sscanf(input, "CREATE TABLE %s (%[^)])",table_name,column) ==2){
       printf("\n%s  --  %s\n",table_name,column);
+      create_table(table_name, column);
   }else {
       printf("Syntax ERROR!!\n");
       printf("CREATE TABLE table_name column\n");
@@ -104,7 +107,7 @@ int sep_column_datatype(char ***column_name, char ***column_datatype, char *colu
      *column_name = malloc(MAX_COLUMNS * sizeof(char*));
      *column_datatype = malloc(MAX_COLUMNS * sizeof(char*));
      int index = 0;
-     int count = 0;
+     int count = 1;
      for(char *p = column;*p;p++){
          if(*p == ','){
              count++;
@@ -124,3 +127,21 @@ int sep_column_datatype(char ***column_name, char ***column_datatype, char *colu
     return count;
 }
 
+
+DataType get_data_type_from_string(const char *type_str) {
+    if (strncmp(type_str, "TINYINT", 7) == 0) {
+        return MYSQL_TYPE_TINY;
+    } else if (strncmp(type_str, "SMALLINT", 8) == 0) {
+        return MYSQL_TYPE_SHORT;
+    } else if (strncmp(type_str, "INT", 3) == 0 || strncmp(type_str, "INTEGER", 7) == 0) {
+        return MYSQL_TYPE_LONG;
+    } else if (strncmp(type_str, "FLOAT", 5) == 0) {
+        return MYSQL_TYPE_FLOAT;
+    } else if (strncmp(type_str, "DOUBLE", 6) == 0 || strncmp(type_str, "REAL", 4) == 0) {
+        return MYSQL_TYPE_DOUBLE;
+    } else if (strncmp(type_str, "NULL", 4) == 0) {
+        return MYSQL_TYPE_NULL;
+    } else {
+        return -1; // Unknown type
+    }
+}
