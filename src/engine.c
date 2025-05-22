@@ -6,7 +6,6 @@
 #include "engine.h"
 
 
-#define HASHTABLE_TABLE_SIZE 100
 
 union Data{
     int8_t tinyint;           // TINYINT
@@ -20,19 +19,20 @@ union Data{
     
 };
 
+int table_count = 0;
 
-typedef struct {
-  char *name;
-  struct table *table;
-}tables_t;
 
-tables_t *hashtable[HASHTABLE_TABLE_SIZE]; // creating hashmap to fetch table fastly
 typedef struct {
   char *name;
   DataType type;
   union Data data;
 
 } column_t;
+
+
+typedef struct {
+  void** rows_data;
+} row_t;
 
 typedef struct table{
   char *name;
@@ -41,11 +41,12 @@ typedef struct table{
 
   int row_capacity;
   int rows_count;
+  row_t *rows[MAX_ROWS];
 }table_t;
 
-typedef struct {
-  void** rows;
-} row_t;
+table_t *hashtable[HASHTABLE_TABLE_SIZE];
+
+table_t *table_list[50];
 
 
 void create_table(const char *table_name, const char *columns_input){
@@ -72,11 +73,46 @@ void create_table(const char *table_name, const char *columns_input){
       new_table->column[i]->name = strdup(column_name[i]);
       new_table->column[i]->type = get_data_type_from_string(column_datatype[i]);
     }
-
-    // storing values and initializing table in hashmap
+    table_list[table_count++] = new_table;
     index = hash(new_table->name);
-    hashtable[index] = malloc(sizeof(tables_t));
+    hashtable[index] = new_table;
 }
+
+void *check(int data_type, char *value){
+    void *addr = NULL;
+    if(data_type == 1){
+        addr = malloc(sizeof(int));
+        if(addr) *(int *)addr = atoi(value);
+    }else if (data_type == 2){
+        addr = strdup(value);
+    }
+    return addr;
+
+void insert_row_into_table(char *table_name,char *columns, char *values){
+    char *column_name[10],*column_values[10];
+    int count = sep_column_values(columns,values,column_name,column_values);
+    void **row = malloc(sizeof(void) * count);
+    printf("after %s ", column_name[0]);
+    for(int i =0;i<count;i++){
+        row[i] = check(1,column_name[i]);
+        printf("values : %d \n",*(int *)row[i]);
+    }
+}
+
+
+
+bool is_table_exist(const char *table_name){
+    int index = hash(table_name);
+    if (hashtable[index] != NULL && strcmp(hashtable[index]->name,table_name) == 0){
+        printf("TABLE EXISTS");
+        return true;
+    }else{
+        printf("TABLE DOES NOT EXIST");
+        return false;
+    }
+}
+
+
 
 int hash(const char *key){
     int hash = 0;
