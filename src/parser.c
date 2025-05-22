@@ -20,6 +20,8 @@ void parser_command(const char *input){
       update_parser(input);
   }else if (strncmp(input,"DROP TABLE", 9) == 0){
       drop_parser(input);
+  }else if (strncmp(input,"scan", 4) == 0){
+        is_table_exist(input);
   }else{
       printf("UNKOWN COMMAND\n");
   }
@@ -72,6 +74,7 @@ void insert_into_parser(const char *input){
   char values[300];
   if (sscanf(input, "INSERT INTO %s (%[^)]) VALUES (%[^)])",table_name,column,values) ==3){
       printf("\n%s  --  %s -- %s\n",table_name,column,values);
+      insert_row_into_table(table_name,column,values);
   }else {
       printf("Syntax ERROR!!\n");
       printf("INSERT INTO table_name (column,...) VALUES (values,...)\n");  
@@ -126,6 +129,26 @@ int sep_column_datatype(char ***column_name, char ***column_datatype, char *colu
      }
     return count;
 }
+
+
+
+
+    int sep_column_values(char *columns, char *values, char **column_name, char **column_values){
+        /*This function is used to seperate column and values from input to insert row in the table*/
+        char *saveptr1,*saveptr2;
+        int index = 0;
+        char *column = strtok_r(columns,",",&saveptr1);
+        char *value = strtok_r(values,",",&saveptr2);
+        while(column != NULL){
+            column_name[index] = column;
+            printf("token : %s\n",column_name[index]);
+            column = strtok_r(NULL,",",&saveptr1);
+            values = strtok_r(NULL,",",&saveptr2);
+            index++;
+
+        }
+        return index;
+    }
 
 
 DataType get_data_type_from_string(const char *type_str) {
