@@ -6,6 +6,10 @@ Started with my extraordinary curiosity and stuck in the void, debugging segment
 
 As a said it's light as feather it contain only parser and thinking Abt engine? maybe we need v20 twin engine with hyper-tuned, realism-enhanced, quantum powdered execution layer.( it complex that's what I'm saying atleast you get it)
 
+although i managed to implement table creation and give the user to choose the datatype dynamically for columns.
+
+for rows I'm confused wheather void ** or unions might be better even tho I implemented void **
+
 ## Features
 
 - **SQL Query Parsing**: Interprets basic SQL commands such as `SELECT`, `INSERT`, `UPDATE`, and `DELETE`.
