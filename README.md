@@ -2,7 +2,10 @@
 
 **lightweight SQL engine built from scratch using C**
 
-MINI-SQL is a minimalistic SQL engine developed in C, designed to execute a subset of SQL queries. 
+Started with my extraordinary curiosity and stuck in the void, debugging segmentation fault using only intuition and mirror
+
+As a said it's light as feather it contain only parser and thinking Abt engine? maybe we need v20 twin engine with hyper-tuned, realism-enhanced, quantum powdered execution layer.( it complex that's what I'm saying atleast you get it)
+
 ## Features
 
 - **SQL Query Parsing**: Interprets basic SQL commands such as `SELECT`, `INSERT`, `UPDATE`, and `DELETE`.
