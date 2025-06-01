@@ -21,3 +21,7 @@ To build and run MINI-SQL:
    cd MINI-SQL/src
    gcc main.c parser.c engine.c
    ./a.out
+
+## Disclaimer 
+
+Work in progress 
